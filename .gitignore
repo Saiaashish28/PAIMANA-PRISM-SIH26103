@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+data/artifacts/
+data/prism.db
+node_modules/
+frontend/dist/
+.env
+*.tsbuildinfo
+
+# synthetic demo data is generated on demand (python -m prism.data.generator)
+data/raw/
+.venv/
+venv/
+*.log
+data/prism.db-*

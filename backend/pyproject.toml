@@ -1,0 +1,13 @@
+[project]
+name = "paimana-prism"
+version = "1.0.0"
+description = "PAIMANA PRISM - Predictive Risk Intelligence for Smart Infrastructure Monitoring"
+requires-python = ">=3.11"
+readme = "../README.md"
+
+[tool.setuptools.packages.find]
+include = ["prism*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

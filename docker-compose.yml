@@ -1,0 +1,34 @@
+# PAIMANA PRISM: UI (http://localhost:8080), API, and a local Ollama running Qwen 2.5 3B.
+# Everything runs inside this network; project data never leaves the deployment.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    volumes: [ollama:/root/.ollama]
+    restart: unless-stopped
+
+  ollama-pull:  # one-shot: download the model (skip in air-gapped sites with a pre-loaded volume)
+    image: ollama/ollama:latest
+    depends_on: [ollama]
+    environment: [OLLAMA_HOST=ollama:11434]
+    entrypoint: ["sh", "-c", "sleep 5 && ollama pull qwen2.5:3b"]
+    volumes: [ollama:/root/.ollama]
+    restart: "no"
+
+  backend:
+    build: ./backend
+    environment:
+      PRISM_OLLAMA_HOST: http://ollama:11434
+      PRISM_OLLAMA_MODEL: qwen2.5:3b
+    volumes: [./data:/data]
+    depends_on: [ollama]
+    ports: ["8000:8000"]
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on: [backend]
+    ports: ["8080:80"]
+    restart: unless-stopped
+
+volumes:
+  ollama:
