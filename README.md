@@ -50,6 +50,40 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 The dashboard opens at http://localhost:5173 and the API docs at http://localhost:8000/docs. The first start trains every model (~2 min); after that the models are cached.
 
+### Run the app locally
+
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\Scripts\python -m pip install -r requirements.txt
+# macOS / Linux: . .venv/bin/activate && python -m pip install -r requirements.txt
+python -m uvicorn prism.api.main:app --port 8000
+```
+
+Then in a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Always start uvicorn with the *same* Python that installed the packages (`python -m uvicorn`). This avoids `ModuleNotFoundError`.
+
+### Run tests
+
+The repo includes a pytest suite, but the test dependencies are kept in `backend/requirements-dev.txt` and must be installed separately:
+
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\Scripts\python -m pip install -r requirements-dev.txt
+# macOS / Linux: . .venv/bin/activate && python -m pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+If you only install `requirements.txt`, the tests will not run because `pytest` is not part of the runtime requirements.
+
 <details><summary>Manual start</summary>
 
 ```bash
